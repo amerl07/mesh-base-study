@@ -1,0 +1,51 @@
+# BFR report export   run: YL_FC_MeshBase40mm_Straight_20260913_0900
+# raw report values (half-car, undoubled) per BFR_CFD_Standards
+# DF sign convention: downforce reads positive
+
+Full Car CoP (Meters)                                  0.773179  m
+Full Car CoP                                          49.090728  
+Radiator MF Rate                                       0.262068  kg/s
+Inlet MF Averaged Pressure                            47.086410  Pa
+Outlet MF Averaged Pressure                           29.068681  Pa
+Pressure Drop                                         18.017729  
+Cell Count                                      36840164.000000  
+Frontal Area                                           0.559819  m^2
+UT CoP (Meters)                                        0.689392  m
+RW CoP (Meters)                                        0.000000  m
+RW Area                                                2.214687  m^2
+FW Area                                                1.145527  m^2
+UT Area                                                1.441529  m^2
+ClA                                                   -1.774613  
+CdA                                                    0.673835  
+RW DF                                                 84.225322  N
+UT DF                                                 94.670177  N
+FW DF                                                 85.973142  N
+Body DF                                               -7.735168  N
+Wheel DF                                              -8.356922  N
+Whisker DF                                            -4.147114  N
+Full Car DF                                          244.563901  N
+Radiator DF                                           -0.322710  N
+Body Drag                                             24.119768  N
+Full Car Drag                                         92.862846  N
+FW Drag                                                8.547236  N
+RW Drag                                               39.256284  N
+UT Drag                                               12.307739  N
+Wheel Drag                                             8.510763  N
+Whisker Drag                                          -0.556475  N
+Radiator Drag                                          1.020662  N
+EL4 DF                                                51.455642  N
+EL5 DF                                                14.158859  N
+EL6 DF                                                 4.364693  N
+EL7 DF                                                11.472185  N
+EL8 DF                                                 2.713279  N
+Endplate DF                                           -0.066853  N
+Swan Neck DF                                          -0.033436  N
+Carbon Rod DF                                         -0.033436  N
+Carbon Rod Drag                                        0.188713  N
+EL4 Drag                                              10.918801  N
+EL5 Drag                                              13.287338  N
+EL6 Drag                                               8.664795  N
+EL7 Drag                                               0.490640  N
+EL8 Drag                                               1.320421  N
+Endplate Drag                                          3.403799  N
+Swan Neck Drag                                         0.188713  N
