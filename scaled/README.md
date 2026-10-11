@@ -19,7 +19,7 @@ Follow-up to the mesh base size study in the parent folder. In that study, chang
   `% delta = (value_at_mesh - value_at_30mm) / |value_at_30mm| * 100`
 - **Sign convention.** These reports use *downforce reads negative*, while the original used *positive*. The parser reads the `# DF sign convention` header and flips every `* DF` metric so that downforce reads **positive**. `ClA` is left as reported.
 - **Metric set changed.** `EL8 DF/Drag` are no longer reported. All four scaled reports contain the same 45 metrics.
-- **The DF %-change plot excludes components below 0.1 N at the baseline** (`Endplate DF`, `Swan Neck DF`).
+- **The DF %-change plot excludes components below 0.1 N downforce at the baseline** (`Endplate`, `Swan Neck`). The drag %-change plot shows the same 12 components, in the same order and style, so each component looks the same on both plots.
 - **Cost uses core-seconds per iteration.** The runs used different core counts (127 / 95 / 63 / 15), so wall-clock solve time per iteration can't be compared across runs.
 - **The notebook recomputes durations from the timestamps.** The wall time sheet's formula columns have no cached values until the file is saved once in Excel/WPS, so the notebook doesn't read them.
 - **New section: original vs. scaled comparison** (`plot_compare_original_vs_scaled.png`).
@@ -70,4 +70,34 @@ Run all cells in `mesh_base_study_scaled.ipynb` from top to bottom, from inside 
 - **Cost:** 30mm costs 2.3× as much per iteration as 40mm and 4.2× as much as 60mm.
 - **The absolute values differ between the original and scaled studies.** Both RW Area (2.21 → 1.93 m²) and the reported RW CoP changed, so something besides the mesh changed. Check this before comparing absolute numbers across the two studies.
 
-_Recommended mesh base size: **60mm** for full-car aero development. It is within about 2% of 30mm on DF and drag at about a quarter of the cost per iteration, and no less accurate than 40mm on the full-car numbers. Use **40mm** when radiator/cooling results matter. Use **30mm** when wheel drag or front-wing load needs to be absolute. This is pending a convergence check (all three finer runs stopped at 600–900 iterations) and confirmation of the iteration counts._
+## Conclusion
+
+**Standard mesh base size for sweeps: 60mm** (with the scaled prism-layer setup).
+
+This study was run to fix one mesh size for the many-run work in later design validation, such as aeromaps and parameter sweeps. For that work, a mesh has to be cheap enough to run many times and consistent enough that run-to-run differences come from the design, not the mesh. 60mm is the best balance:
+
+- **Accurate enough on the full-car numbers.** Compared with the finest mesh (30mm, 111M cells), 60mm is within +1.8% on downforce, +1.5% on drag and −0.7 points on CoP. That is no worse than 40mm, which costs about twice as much.
+- **Cheap enough to run many cases.** 60mm has 26M cells, about ¼ of 30mm, and costs about ¼ as much per iteration. It **can be run without the HPC**, which frees the cluster for the finer reference runs and removes queueing from sweep work.
+- **Not coarser than 60mm.** 100mm loses about 3% DF and 4% CoP, EL7 downforce drops 37%, and the radiator flow becomes unphysical.
+
+**Known biases of 60mm** (vs. 30mm, straight-line case). These matter if absolute values are compared with finer-mesh or test data:
+
+| Quantity | 60mm vs. 30mm |
+|---|---|
+| Full Car DF | +1.8% |
+| Full Car CoP | −0.7 points (53.15 vs. 53.81%) |
+| FW DF | +4.9% |
+| Wheel Drag | −13% |
+| Body Drag | +7.5% |
+| Radiator pressure drop | −24% |
+
+**Recommended practice:**
+
+1. **Use 60mm as the default** for sweeps, aeromaps and design comparisons, where *differences* between configurations matter more than absolute values.
+2. **Use a 30mm reference run on the HPC** for the baseline configuration and any final or headline numbers, and to check the 60mm offsets above as the design changes.
+3. **Use 40mm or finer for cooling or radiator studies,** since 60mm underpredicts radiator pressure drop by about 24%. Also go finer for detailed wheel-wake work.
+
+**Before standardising, check two things:**
+
+- **Deltas, not just absolutes.** This study only tested one straight-line condition. Run 2–3 points of a typical sweep (e.g. two ride heights or a yaw angle) at both 60mm and 30mm. Confirm that 60mm reproduces the *change* between configurations, which is what a sweep is used for.
+- **Convergence.** The 30/40/60mm runs stopped at about 700/900/600 iterations (estimated). Some of the 30–60mm differences (≤3%, non-monotonic) may be convergence noise rather than mesh error. Check that the force monitors were flat at the end of each run, and fix a stopping criterion (iterations or monitor tolerance) as part of the standard alongside the 60mm base size.
